@@ -1,0 +1,623 @@
+{% extends 'user/basic.html' %} {% load static %}
+{% load templatehelpers %}
+
+{% block title %} Properties{% endblock title%}
+
+
+{% block css %} {% endblock css %} {% block body %}
+
+<!-- Sub banner start -->
+<div class="sub-banner">
+  <div class="container">
+    <div class="breadcrumb-area">
+      <h1>Properties</h1>
+      <ul class="breadcrumbs">
+        <li><a href="/">Home</a></li>
+        <li class="active">Properties</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Sub Banner end -->
+<!-- Properties section start -->
+<div class="properties-section content-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-12">
+        <div class="sidebar-left">
+          <!-- Advanced search start -->
+          <div class="widget advanced-search">
+            <h3 class="sidebar-title">Advanced Search
+            </h3>
+            <div class="s-border"></div>
+            <div class="m-border"></div>
+            <form method="GET" action="/all-properties">
+              <div class="form-group">
+                <select class="selectpicker search-fields" name="status">
+                  <option value="all">All Status</option>
+                  {%for status in common_properties_data.status%}
+
+                  {%if properties_data.selected_status == status%}
+                  <option value="{{status}}" selected>{{status}}</option>
+                  {%else %}
+                  <option value="{{status}}">{{status}}</option>
+                  {%endif%}
+
+                  {%endfor%}
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="selectpicker search-fields" name="type">
+                  <option value="all_type">All Type</option>
+
+                  {%if properties_data.selected_type == "apartment"%}
+
+                  <option value="{{apartment}}" selected>Apartments</option>
+                  <option value="studio">Studio</option>
+
+                  {%elif properties_data.selected_type == "studio" %}
+                  <option value="{{studio}}" selected>Studio</option>
+                  <option value="apartment">Apartments</option>
+
+                  {%else%}
+                  <option value="apartment">Apartments</option>
+                  <option value="studio">Studio</option>
+                  {%endif%}
+
+
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="selectpicker search-fields" name="location">
+                  <option>City</option>
+                  {%for city in common_properties_data.cities%}
+                  {%if properties_data.selected_city == city%}
+                  <option value="{{city}}" selected>{{city}}</option>
+                  {%else %}
+                  <option value="{{city}}">{{city}}</option>
+                  {%endif%}
+                  {%endfor%}
+                </select>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="form-group">
+                    <select class="selectpicker search-fields" name="bedrooms">
+                      <option>Bedrooms</option>
+                      {%if properties_data.selected_bedrooms == "1"%}
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      {%elif properties_data.selected_bedrooms == "2" %}
+                      <option value="1">1</option>
+                      <option value="2" selected>2</option>
+                      {%else%}
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      {%endif%}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="form-group">
+                    <select class="selectpicker search-fields" name="bathrooms">
+                      <option>Bathroom</option>
+                      {%if properties_data.selected_bathrooms == "1"%}
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      {%elif properties_data.selected_bathrooms == "2" %}
+                      <option value="1">1</option>
+                      <option value="2" selected>2</option>
+                      {%else%}
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      {%endif%}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="form-group">
+                    <select class="selectpicker search-fields" name="balcony">
+                      <option>Balcony</option>
+                      {%if properties_data.selected_balcony == "1"%}
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      {%elif properties_data.selected_balcony == "2" %}
+                      <option value="1">1</option>
+                      <option value="2" selected>2</option>
+                      {%else%}
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      {%endif%}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="form-group">
+                    <select class="selectpicker search-fields" name="garage">
+                      <option>Garage</option>
+                      {%if properties_data.selected_garage == "1"%}
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      {%elif properties_data.selected_garage == "2" %}
+                      <option value="1">1</option>
+                      <option value="2" selected>2</option>
+                      {%else%}
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      {%endif%}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="range-slider clearfix form-group">
+                <label>Area</label>
+                <div data-min="0" data-max="100000" data-min-name="min_area" data-max-name="max_area" data-unit="Sq ft"
+                  class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="range-slider clearfix form-group mb-30">
+                <label>Price</label>
+                <div data-min="0" data-max="1500000" data-min-name="min_price" data-max-name="max_price" data-unit="USD"
+                  class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="accordion accordion-flush other-features mb-30" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      Other Features
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                      <h3 class="sidebar-title">Features</h3>
+
+                      <div class="s-border"></div>
+                      <div class="m-border"></div>
+
+                      {%for feature in common_properties_data.feature_list%}
+                      <div class="checkbox checkbox-theme checkbox-circle">
+                        <input id="feature_{{feature.id}}" type="checkbox" name="feature" value="{{feature}}" />
+                        <label for="feature_{{feature.id}}">
+                          {{feature}}
+                        </label>
+                      </div>
+                      {%endfor%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <input type="hidden" name="features_list" value="" id="features_list" />
+              <div class="form-group mb-0">
+                <button class="search-button" id="FilterButton">Search</button>
+              </div>
+            </form>
+          </div>
+          <!-- Recent properties start -->
+          <div class="widget recent-properties">
+            <h3 class="sidebar-title">Recent Properties</h3>
+            <div class="s-border"></div>
+            <div class="m-border"></div>
+            {%for property in common_properties_data.recent_properties%}
+            <div class="d-flex mb-3 recent-posts-box">
+              <a class="pr-3" href="/properties/{{property.id}}">
+                <img src="/media/{{property.image}}" alt="small-properties" class="flex-shrink-0 me-3" />
+              </a>
+              <div class="detail align-self-center">
+                <h5>
+                  <a href="/properties/{{property.id}}">{{property.title}}</a>
+                </h5>
+                <div class="listing-post-meta">
+                  £{{property.price}}
+                  <a href="/properties/{{property.id}}"><i class="fa fa-calendar"></i> {{property.pub_date}} </a>
+                </div>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          {% comment %} <!-- Our agent sidebar start -->
+          <div class="our-agent-sidebar">
+            <div class="p-20">
+              <h3 class="sidebar-title">Our Agent</h3>
+              <div class="s-border"></div>
+              <div class="m-border"></div>
+            </div>
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                  aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                  aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                  aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="team-1">
+                    <div class="team-thumb">
+                      <a href="#">
+                        <img
+                          src="https://img.freepik.com/free-photo/money-likes-confidence-self-assured-charismatic-intelligent-handsome-man-with-brown-hair-beard-blue-eyes-holding-paper-cup-coffee-smiling-happily-meeting-cute-girl-after-work-cafe_176420-22693.jpg?w=740&t=st=1670398220~exp=1670398820~hmac=2cb2d6e9ac136b2801237a1bb21dbc343d04f85e7b708b50f0cc04c2d8aa1f2d"
+                          alt="agent-2" class="img-fluid" />
+                      </a>
+                      <div class="team-social flex-middle">
+                        <div class="team-overlay"></div>
+                        <div class="team-social-inner">
+                          <a rel="nofollow" href="#" class="facebook">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="twitter">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="google">
+                            <i class="fa fa-google" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="linkedin">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="team-info">
+                      <h4>
+                        <a href="#">John Pitarshon</a>
+                      </h4>
+                      <p>Creative Director</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="team-1">
+                    <div class="team-thumb">
+                      <a href="#">
+                        <img
+                          src="https://img.freepik.com/free-photo/money-likes-confidence-self-assured-charismatic-intelligent-handsome-man-with-brown-hair-beard-blue-eyes-holding-paper-cup-coffee-smiling-happily-meeting-cute-girl-after-work-cafe_176420-22693.jpg?w=740&t=st=1670398220~exp=1670398820~hmac=2cb2d6e9ac136b2801237a1bb21dbc343d04f85e7b708b50f0cc04c2d8aa1f2d"
+                          alt="agent-2" class="img-fluid" />
+                      </a>
+                      <div class="team-social flex-middle">
+                        <div class="team-overlay"></div>
+                        <div class="team-social-inner">
+                          <a rel="nofollow" href="#" class="facebook">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="twitter">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="google">
+                            <i class="fa fa-google" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="linkedin">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="team-info">
+                      <h4>
+                        <a href="#">Martin Smith</a>
+                      </h4>
+                      <p>Web Developer</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="team-1">
+                    <div class="team-thumb">
+                      <a href="#">
+                        <img
+                          src="https://img.freepik.com/free-photo/handsome-corporate-man-real-estate-agent-assistant-smiling-hold-hands-together-how-may-i-help-you-smiling-friendly-polite-assist-customer-white-background_176420-45257.jpg?w=740&t=st=1670398199~exp=1670398799~hmac=df8f74814ca0485a54bb039ef39216c39da06dbbbbc3e277adc2abfe8f2ad9d0"
+                          alt="agent-2" class="img-fluid" />
+                      </a>
+                      <div class="team-social flex-middle">
+                        <div class="team-overlay"></div>
+                        <div class="team-social-inner">
+                          <a rel="nofollow" href="#" class="facebook">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="twitter">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="google">
+                            <i class="fa fa-google" aria-hidden="true"></i>
+                          </a>
+                          <a rel="nofollow" href="#" class="linkedin">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="team-info">
+                      <h4>
+                        <a href="#">Karen Paran</a>
+                      </h4>
+                      <p>Support Manager</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> {% endcomment %}
+        </div>
+      </div>
+
+      <div class="col-lg-8 col-md-12">
+        <!-- Option bar start -->
+        <div class="option-bar">
+          <div class="row">
+            <div class="col-lg-6 col-8">
+              <div class="sorting-options2">
+                  <span class="sort">Sort by:</span>
+                  <select class="selectpicker search-fields" name="sort_properties" id="sort-list" onchange="location = finalurl();">
+                    <option>Default Order</option>
+                    <option value="price_high_low" {{properties_data.is_price_high_low}}>
+                      Price High to Low
+                    </option>
+                    <option value="price_low_high" {{properties_data.is_price_low_high}}>
+                      Price: Low to High
+                    </option>
+                    <option value="latest_property" {{properties_data.is_latest_property}}>
+                      Newest Properties
+                    </option>
+                    <option value="oldest_property" {{properties_data.is_oldest_property}}>
+                      Oldest Properties
+                    </option>
+                  </select>
+              </div>
+            </div>
+            <div class="col-lg-6 col-4">
+              <div class="sorting-options">
+                <button class="change-view-btn active-view-btn" id="list_view">
+                  <i class="fa fa-th-list"></i>
+                </button>
+                <button class="change-view-btn" id="grid_view">
+                  <i class="fa fa-th-large"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div id="grid_view_div" style="display: none" >
+          <div class="row">
+            {%for property in properties %}
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="property-box-6">
+                <div class="property-photo">
+                  <img src="/media/{{property.image}}" alt="photo" class="img-fluid w-100" style="height:400px;" />
+                  <div class="tag">{{property.status}}</div>
+
+                </div>
+                <div class="property-inner">
+                  <div class="property-info">
+                    <h4 class="properties-name">
+                      <a href="/properties/{{property.id}}">{{property.title}}{{property.status}}</a>
+                    </h4>
+                    <p class="location">
+                      <a href="/properties/{{property.id}}">
+                        <i class="fa fa-map-marker"></i> {{property.city | title}}
+                      </a>
+                      {%if property.yields %}
+                    <p class="location">
+                      <a><span> <i class="fa fa-info-circle"></i> Net Yields: </span>{{property.yields}}</a>
+                    </p>
+                    {%endif%}
+
+                    {%if property.room %}
+                    <p class="location"><a><span><i class="fa fa-home"></i> Units: </span> {{property.room}} Bed {{property.type | title}}</a></p>
+                    {%endif%}
+                  </div>
+                </div>
+                <div class="team-hover-content">
+                  <div class="property-photo">
+                    <img src="/media/{{property.image}}" alt="photo" class="img-fluid w-100" style="height:400px;" />
+                  </div>
+                  <div class="property-info mt-0">
+                    <h4 class="properties-name">
+                      <a href="/properties/{{property.id}}">{{property.title}}</a>
+                      <p class="location">
+                        <a href="/properties/{{property.id}}">
+                          <i class="fa fa-map-marker"></i> {{property.city | title}}
+                        </a>
+                        {%if property.yields %}
+                      <p class="location">
+                        <a><i class="fa fa-info-circle"></i> Net Yields: {{property.yields}}</a>
+                      </p>
+                      {%endif%}
+  
+                      {%if property.room %}
+                      <p class="location"><a><i class="fa fa-home"></i> Units: {{property.room}} Bed {{property.type | title}}</a></p>
+                      {%endif%}
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+        </div>
+        <div id="list_view_div">
+          {%for property in properties %}
+          <!-- Property box 2 start -->
+          <div class="property-box-2">
+            <div class="row g-0">
+              <div class="col-lg-5 col-md-5">
+                <div class="property-photo">
+                  <a href="/properties/{{property.id}}" class="property-img">
+                    <img src="/media/{{property.image}}" alt="properties" class="img-fluid" />
+                    <div class="listing-badges">
+                      <div class="tag">{{property.status}}</div>
+                    </div>
+                    <div class="price-box">
+                      From <span>£{{property.price}}</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-7 col-md-7">
+                <div class="detail">
+                  <div class="hdg">
+                    <h3 class="title">
+                      <a href="/properties/{{property.id}}">{{property.title}}</a>
+                    </h3>
+                    <h5 class="location">
+                      <a href="/properties/{{property.id}}"><span>
+                        <i class="fa fa-map-marker"></i>{{property.city | title}}</span>
+                      </a>
+                    </h5>
+                    {%if property.yields %}
+                    <h5 class="location">
+                      <a><span> <i class="fa fa-info-circle"></i> Net Yields: </span>{{property.yields}}</a>
+                    </h5>
+                    {%endif%}
+
+                    {%if property.room %}
+                    <h5 class="location"><a><span><i class="fa fa-home"></i> Units: </span> {{property.room}} Bed {{property.type | title}}</a></h5>
+                    {%endif%}
+                  </div>
+                
+                  <div class="footer">
+                    {% if property.is_favorite %}
+                    <i class="heart fa fa-heart" id="{{property.id}}"></i>
+                    {%else%}
+                    <i class="heart fa fa-heart-o" id="{{property.id}}"></i>
+                    {%endif%}
+                    <span> <i class="flaticon-calendar"></i>{{property.pub_date}} Ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+
+
+
+
+        {% if is_paginated %}
+        <div class="pagination-box hidden-mb-45 text-center">
+
+          <nav class="pagination">
+            <ul class="pagination">
+              {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" tabindex="-1" aria-disabled="true"
+                  href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
+              </li>
+              {% endif %}
+              {% for i in paginator.page_range %}
+              {% if i == page_obj.number%}
+              <li class="page-item">
+                <a class="page-link active" href="{% relative_url i 'page' request.GET.urlencode %}">{{i}}</a>
+              </li>
+
+
+              {% else %}
+              <li class="page-item">
+                <a class="page-link " href="{% relative_url i 'page' request.GET.urlencode %}">{{i}}</a>
+              </li>
+
+              {% endif %}
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" tabindex="-1"
+                  href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Full Page Search -->
+<div id="full-page-search">
+  <button type="button" class="close">×</button>
+  <form action="index.html#">
+    <input type="search" value="" placeholder="type keyword(s) here" />
+    <button type="submit" class="btn btn-sm button-theme">Search</button>
+  </form>
+</div>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+<script src="jquery.ui.touch-punch.min.js"></script>
+
+<script>
+  function finalurl() {
+    var url = new URL(window.location.href);
+    var search_params = url.searchParams;
+    search_params.set('ordering', document.getElementById("sort-list").value);
+    url.search = search_params.toString();
+    var new_url = url.toString();
+    console.log(new_url)
+    return new_url
+  }
+  
+
+  $(document).ready(function () {
+    $("#FilterButton").click(function () {
+      var dt = [];
+      $.each($("input[name='feature']:checked"), function () {
+        dt.push($(this).val());
+      });
+      document.getElementById("features_list").value = dt;
+    });
+  });
+
+  $(".change-view-btn").on("click", function (e) {
+    if (this.id == "grid_view") {
+      $("#grid_view_div").show();
+      $("#list_view_div").hide();
+      $("#grid_view").addClass("active-view-btn");
+      $("#list_view").removeClass("active-view-btn");
+    } else if (this.id == "list_view") {
+      $("#list_view").addClass("active-view-btn");
+      $("#grid_view").removeClass("active-view-btn");
+      $("#list_view_div").show();
+      $("#grid_view_div").hide();
+    }
+  });
+</script>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap-submenu.js"></script>
+<script src="js/rangeslider.js"></script>
+<script src="js/jquery.mb.YTPlayer.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+<script src="js/jquery.scrollUp.js"></script>
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/leaflet.js"></script>
+<script src="js/leaflet-providers.js"></script>
+<script src="js/leaflet.markercluster.js"></script>
+<script src="js/dropzone.js"></script>
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.filterizr.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/jquery.countdown.js"></script>
+<script src="js/modernizr.custom.js"></script>
+<script src="js/boxes-component.js"></script>
+<script src="js/boxes-core.js"></script>
+<script src="js/maps.js"></script>
+<script src="js/app.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="js/ie10-viewport-bug-workaround.js"></script>
+<!-- Custom javascript -->
+<script src="js/ie10-viewport-bug-workaround.js"></script>
+
+{%endblock body%}

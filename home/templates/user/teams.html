@@ -1,0 +1,55 @@
+{% extends 'user/basic.html' %} {% load static %} {% block title %} Meet The Team {%endblock title%} {% block css %} {% endblock css %} {% block body %}
+
+<!-- Sub banner start -->
+<div class="sub-banner">
+  <div class="container">
+    <div class="breadcrumb-area">
+      <h1>{{page_data.member_name}}</h1>
+      <ul class="breadcrumbs">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href='/about'>About</a></li> <li class="active">Meet the team</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Sub banner end -->
+<div class="container my-5">
+
+  <h1 class="h1 text-center py-4" style="color:#00CE8D;"><span style="color:#262525">Meet Our </span>Award Winning Team</h1>
+  <hr style="height:5px;background-color: #00CE8D;"/>
+  <p class="lead text-center py-3 mb-5">Lorem Ipsum is simply dummy text of the printing and typesetting
+    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+    1500s, when an unknown printer took a
+    galley of type and scrambled it to make a type specimen book.
+    1500s, when an unknown printer took a
+    galley of type and scrambled it to make a type specimen book.
+  </p>
+
+
+  <div class="row">
+    {%for member in team_members %}
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="team-5">
+            <div class="team-info">
+                <img src="/media/{{member.image}}"
+                    alt="agent-5" class="img-fluid" style="max-height:400px;">
+            </div>
+            <div class="team-box">
+                <div class="team-details">
+                    <i class="fa fa-user user d-lg-none"></i>
+                    <div>
+                        <a href="/team-member/{{member.name}}/{{member.id}}">
+                            <h4 class='text-capitalize'>{{member.name}}</h4>
+                        </a>
+                        <p>{{member.role}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+  
+</div>
+</div>
+
+{%endblock body%} {% block script %} {% endblock script %}
