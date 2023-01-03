@@ -1,7 +1,7 @@
 {% extends 'user/basic.html' %} {% load static %}
 {% block title %} {{page_data.page_name}}{% endblock title%} {% block css %}
 <style>
-    
+
     .properties-description p strong {
         font-weight: bolder !important;
         color: #dc3545;
@@ -34,7 +34,7 @@
         .product-slider-box .gallary_img {
             height: 70px;
         }
-     
+
     }
 </style> {% endblock css %}
 
@@ -162,7 +162,7 @@
                     </table>
                 </div>
 
-         
+
             <div class="block-wrap">
                 <div class="block-title-wrap">
                     <h3 class="heading-2">Mortgage Calculator</h3>
@@ -377,16 +377,16 @@
 
                     {%for property in common_properties_data.recent_properties%}
                     <div class="d-flex mb-3 recent-posts-box">
-                        <a class="pr-3" href="/properties/{{property.id}}">
-                            <img src="/media/{{property.image}}" alt="small-properties" class="flex-shrink-0 me-3" />
+                        <a class="col-6 p-0" href="/properties/{{property.id}}">
+                            <img src="/media/{{property.image}}" alt="small-properties" class="flex-shrink-0 img-fluid w-100" />
                         </a>
-                        <div class="detail align-self-center">
-                            <h5>
+                        <div class="detail col-6 align-self-center">
+                            <h5 class="m-0">
                                 <a href="/properties/{{property.id}}">{{property.title}}</a>
                             </h5>
                             <div class="listing-post-meta">
                                 ${{property.price}}
-                                <a href="/properties/{{property.id}}"><i class="fa fa-calendar"></i>
+                                <a href="/properties/{{property.id}}" class="d-block"><i class="fa fa-calendar"></i>
                                     {{property.pub_date}} </a>
                             </div>
                         </div>

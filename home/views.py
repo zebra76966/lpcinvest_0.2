@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.views import generic
 from django.urls import reverse_lazy
 from .forms import LoginForm, RegisterForm
-import json 
+import json
 from django.db.models import    Q
 from collections import defaultdict
 from django.db.models import Max,Min
@@ -20,7 +20,7 @@ from pytonik_time_ago.timeago import timeago
 from django.contrib.auth.decorators import login_required
 import geopy.distance
 from geopy.geocoders import Nominatim
-from django.contrib import messages 
+from django.contrib import messages
 import time
 User = get_user_model()
 import requests
@@ -48,7 +48,7 @@ def get_furniture_list(properties):
     for property in properties:
         d = defaultdict(list)
         prop = PropertyFurnitureMapper.objects.filter(property = property)
-        for furniture in prop:    
+        for furniture in prop:
             furniture.furniture_type = int(furniture.furniture_type)
             if furniture.furniture_type == 1:
                 d['room'].append(furniture.furniture_counts.furniture_counts)
@@ -56,7 +56,7 @@ def get_furniture_list(properties):
                 d['bathrooms'].append(furniture.furniture_counts.furniture_counts)
             elif furniture.furniture_type == 3:
                 d['garage'].append(furniture.furniture_counts.furniture_counts)
-        
+
         properties_dict = {
             "title":property.title,
             "id":property.id,
@@ -69,7 +69,7 @@ def get_furniture_list(properties):
             "price":property.price,
         }
         properties_list.append(properties_dict)
-    
+
     return properties_list
 
 def get_discounted_price(property):
@@ -77,7 +77,7 @@ def get_discounted_price(property):
        is_offer = PropertyOffers.objects.get(property=property)
        discount_price = property.price//100 * is_offer.discount.value
        discount_data = {"discounted_price":discount_price,
-       "old_price":property.price,  
+       "old_price":property.price,
        "offer": is_offer.discount.value
        }
        return discount_data
@@ -85,7 +85,7 @@ def get_discounted_price(property):
 def clean_property_data(property,user_id= None):
     d = defaultdict(list)
     prop = PropertyFurnitureMapper.objects.filter(property = property)
-    for furniture in prop:    
+    for furniture in prop:
         furniture.furniture_type = int(furniture.furniture_type)
         if furniture.furniture_type == 1:
             d['room'].append(furniture.furniture_counts.furniture_counts)
@@ -98,10 +98,10 @@ def clean_property_data(property,user_id= None):
     if user_id is not None:
         if UserFavProperties.objects.filter(property=property).filter(user=user_id).exists():
             is_checked = UserFavProperties.objects.filter(property=property).filter(user=user_id)[0].is_checked
-    
+
     status_ls = PropertyStatusMapper.objects.filter(property = property).values_list('status__status',flat=True)
     if "Completed" in status_ls:
-        status = "Completed" 
+        status = "Completed"
     else:
         status = 'Off plan'
 
@@ -123,7 +123,7 @@ def clean_property_data(property,user_id= None):
         'type':property.get_type_display,
     }
     return properties_dict
-    
+
 
 def home_page(request):
     properties = Properties.objects.all()
@@ -188,27 +188,27 @@ def property_listing(request,type_dict=None):
 
     elif type_dict['type_id'] == 'type':
         properties = Properties.objects.filter(type__in=get_containing(PROP_TYPE_CHOICES,type_dict['type_value'])).filter(is_underconstruction = False).filter(is_exclusive = False)
-    
+
     elif type_dict['type_id'] == 'city':
         properties = Properties.objects.filter(city__in=get_containing(CITIES_CHOICES,type_dict['type_value'])).filter(is_underconstruction = False).filter(is_exclusive = False)
-    
 
-    sort_properties = request.GET.get('ordering', "") 
-    
+
+    sort_properties = request.GET.get('ordering', "")
+
     query = {}
-    query['status'] = request.GET.getlist('status', "")     
-    query['type'] = request.GET.get('type', "")     
-    query['price'] = request.GET.get('price', "")     
-    query['city'] = request.GET.get('location', "")     
-    query['bedrooms'] = request.GET.get('bedrooms', "")    
-    query['bathrooms'] = request.GET.get('bathrooms', "")  
-    query['balcony'] = request.GET.get('balcony', "")  
-    query['garage'] = request.GET.get('garage', "")  
-    query['min_area'] = request.GET.get('min_area', "") 
-    query['max_area'] = request.GET.get('max_area', "") 
-    query['min_price'] = request.GET.get('min_price', "") 
-    query['max_price'] = request.GET.get('max_price', "") 
-    query['features_list'] = request.GET.get('features_list', "") 
+    query['status'] = request.GET.getlist('status', "")
+    query['type'] = request.GET.get('type', "")
+    query['price'] = request.GET.get('price', "")
+    query['city'] = request.GET.get('location', "")
+    query['bedrooms'] = request.GET.get('bedrooms', "")
+    query['bathrooms'] = request.GET.get('bathrooms', "")
+    query['balcony'] = request.GET.get('balcony', "")
+    query['garage'] = request.GET.get('garage', "")
+    query['min_area'] = request.GET.get('min_area', "")
+    query['max_area'] = request.GET.get('max_area', "")
+    query['min_price'] = request.GET.get('min_price', "")
+    query['max_price'] = request.GET.get('max_price', "")
+    query['features_list'] = request.GET.get('features_list', "")
     query['features_list'] = [x for x in query['features_list'].split(',')]
 
     if request.GET.get('status', ""):
@@ -218,7 +218,7 @@ def property_listing(request,type_dict=None):
         properties_data = property_sorting(sort_properties,properties)
         properties = properties_data['properties']
 
-    feature_data = {}    
+    feature_data = {}
     feature_data['selected_city'] = query['city']
     feature_data['selected_type']  = query['type']
     feature_data['selected_status']  = " ".join(query['status'])
@@ -242,7 +242,7 @@ def property_listing(request,type_dict=None):
     try:
         feature_data.update(properties_data)
     except:
-        pass    
+        pass
 
     PRODUCTS_PER_PAGE= 10
     page = request.GET.get('page',1)
@@ -274,13 +274,13 @@ def property_view(request,id):
     property = Properties.objects.get(id = id)
     prop_images = PropertyImage.objects.filter(property = property)
     features = PropertyFeatureMapper.objects.filter(property=property)
-    feature_data['feature_list'] = features    
+    feature_data['feature_list'] = features
     status = list(PropertyStatusMapper.objects.filter(property=property).values_list('status__status',flat=True))
     feature_data['status_list'] = ", ".join(status)
 
     d = defaultdict(list)
     prop = PropertyFurnitureMapper.objects.filter(property = property)
-    for furniture in prop:    
+    for furniture in prop:
         furniture.furniture_type = int(furniture.furniture_type)
         if furniture.furniture_type == 1:
             d['room'].append(furniture.furniture_counts.furniture_counts)
@@ -289,7 +289,7 @@ def property_view(request,id):
         elif furniture.furniture_type == 3:
             d['garage'].append(furniture.furniture_counts.furniture_counts)
 
-    
+
     furniture_data = {"room":" & ".join(d['room']),
                       "bathrooms":" & ".join(d['bathrooms']),
                        "beds":" & ".join(d['beds'])
@@ -297,10 +297,10 @@ def property_view(request,id):
 
     similar_properties = Properties.objects.filter(city = property.city)[:2]
     page_data = {'page_name':property.title}
-    Calculated_data = MortgageCalculator(property.price) 
-    if request.is_ajax(): 
-        properties_list = SendPropertiesToMap(request,property)
-        return JsonResponse({'data':properties_list}) 
+    Calculated_data = MortgageCalculator(property.price)
+    # if request.is_ajax(): 
+    #     properties_list = SendPropertiesToMap(request,property)
+    #     return JsonResponse({'data':properties_list})
 
     location_coord = json.dumps([{'latitude':property.lat,"longitude":property.lon}])
 
@@ -308,7 +308,7 @@ def property_view(request,id):
     ed = time.time()
     property.price = ("{:,}".format(property.price))
     return render(request,'user/property/properties-details1.html',{'property':property,'prop_images':prop_images,"furniture_data":furniture_data,
-    "similar_properties":similar_properties,"feature_data":feature_data,"Calculated_data":Calculated_data,"images_gallery":images_gallery,  
+    "similar_properties":similar_properties,"feature_data":feature_data,"Calculated_data":Calculated_data,"images_gallery":images_gallery,
     "page_data":page_data,"location_coord":location_coord})
     # return render(request,'user/property/properties-details1.html')
 
@@ -332,7 +332,7 @@ def filter_property(query,properties):
         try:
             dt = dt.filter(feature=features_id[0])
             dt_ids = list(dt.values_list('property', flat=True))
-            properties = properties.filter(id__in = dt_ids) 
+            properties = properties.filter(id__in = dt_ids)
         except:
             pass
 
@@ -342,41 +342,41 @@ def filter_property(query,properties):
         status_id = StatusMaster.objects.filter(status__in=query['status'])
         dt = dt.filter(status__in=status_id)
         dt_ids = list(dt.values_list('property', flat=True))
-        properties = properties.filter(id__in = dt_ids) 
+        properties = properties.filter(id__in = dt_ids)
 
 
     dt = PropertyFurnitureMapper.objects.all()
     if query['garage'] != 'Garage':
-        dt1,dt2,dt3 = [],[],[]     
+        dt1,dt2,dt3 = [],[],[]
         dt1 = dt.filter(furniture_type__in=get_containing(FURNITURE_TYPE_CHOICES,"garage")).filter(
             furniture_counts=int(query['garage']))
         dt1 = list(dt1.values_list('property', flat=True))
-        properties = properties.filter(id__in = dt1)  
+        properties = properties.filter(id__in = dt1)
 
 
-    if query['bedrooms'] != 'Bedrooms': 
+    if query['bedrooms'] != 'Bedrooms':
         dt2 = dt.filter(furniture_type__in=get_containing(FURNITURE_TYPE_CHOICES,"room")).filter(
             furniture_counts=int(query['bedrooms']))
         dt2 = list(dt2.values_list('property', flat=True))
         properties = properties.filter(id__in = dt2)
 
-    if query['bathrooms'] != 'Bathroom': 
+    if query['bathrooms'] != 'Bathroom':
         dt3 = dt.filter(furniture_type__in=get_containing(FURNITURE_TYPE_CHOICES,"bathrooms")).filter(
             furniture_counts=int(query['bathrooms']))
         dt3 = list(dt3.values_list('property', flat=True))
         properties = properties.filter(id__in = dt3)
-  
+
 
     properties = properties.filter(city__in=get_containing(CITIES_CHOICES,query["city"])).filter(
         price__range=(int(query['min_price']),int(query['max_price']))).filter(
         type__in = get_containing(PROP_TYPE_CHOICES,query['type'])
-        )     
+        )
 
     #  .filter(
     #     area__range=(int(query['min_area']),int(query['max_area']))).
-        
+
     return properties
- 
+
 
 def property_sorting(query,properties):
     properties_data = {}
@@ -401,33 +401,33 @@ def property_sorting(query,properties):
         if query == "oldest_property":
             properties = properties.order_by('pub_date')
             properties_data['is_oldest_property'] = 'selected'
-            
+
     properties_data['properties'] = properties
     return properties_data
-    
+
 
 def search(request):
-    if request.is_ajax(): 
+    if request.is_ajax():
         query = request.GET.get('term', '')
         search_title = Properties.objects.filter(title__icontains=query.lower())
         search_type= Properties.objects.filter(type__in = get_containing(PROP_TYPE_CHOICES,query.lower()))
 
         results = []
-        for type_name in (search_type): 
+        for type_name in (search_type):
             if type_name.get_type_display() not in results:
                 results.append(type_name.get_type_display())
-        
+
         for title in search_title:
             if title.title not in results:
-                results.append(title.title) 
+                results.append(title.title)
 
         data = json.dumps(results)
 
         return HttpResponse(data)
 
     properties_data = {}
-    query = request.GET.get('query', "") 
-    properties_status = request.GET.getlist('properties_status', "") 
+    query = request.GET.get('query', "")
+    properties_status = request.GET.getlist('properties_status', "")
     properties = Properties.objects.filter(Q(title__contains=query) | Q(type__in=get_containing(PROP_TYPE_CHOICES,query.lower())))
 
     if not 'all' in properties_status:
@@ -437,7 +437,7 @@ def search(request):
         dt_ids = list(dt.values_list('property', flat=True))
         properties = properties.filter(id__in = dt_ids)
 
-    sort_properties = request.GET.get('ordering', "") 
+    sort_properties = request.GET.get('ordering', "")
     if sort_properties:
         properties_data = property_sorting(sort_properties,properties)
         properties = properties_data['properties']
@@ -445,12 +445,12 @@ def search(request):
     fav_properties = list()
     try:
         for prop in properties:
-            fav_properties.append(clean_property_data(prop,request.user)) 
+            fav_properties.append(clean_property_data(prop,request.user))
             properties = fav_properties
     except:
         for prop in properties:
-            fav_properties.append(clean_property_data(prop)) 
-            properties = fav_properties      
+            fav_properties.append(clean_property_data(prop))
+            properties = fav_properties
 
     return render(request,'user/property/properties-list-leftsidebar.html',{"properties":properties,"properties_data":properties_data})
 
@@ -465,12 +465,12 @@ def get_properties(in_property):
     properties = Properties.objects.filter(city=in_property.city)
     properties_list = []
     for property in properties:
-         # Point two 
+         # Point two
         lon2 = property.lon
         lat2 = property.lat
         coords_1 = (lon1, lat1)
         coords_2 = (lon2, lat2)
-        distance = geopy.distance.geodesic(coords_1, coords_2).km 
+        distance = geopy.distance.geodesic(coords_1, coords_2).km
 
         properties_list.append({
             "id": int(property.id),
@@ -501,7 +501,7 @@ def MortgageCalculator(amount):
     #     pass
     # else:
     #     pass
-        
+
     data = {}
     principal = amount
     calculatedInterest = 3 / 100 / 12
@@ -529,14 +529,14 @@ def thankyou_page(request):
 def SendPropertiesToMap(request,property):
     # property = Properties.objects.last()
     properties_list = get_properties(property)
-    return properties_list     
+    return properties_list
 
 
 def get_favorite_properties(request):
-    if request.is_ajax(): 
+    if request.is_ajax():
         query = request.POST.get('fav_properties', '')
         query = json.loads(query)[0]
-        
+
         property_id = Properties.objects.get(id=int(query['property_id']))
         if UserFavProperties.objects.filter(property=property_id,user= request.user).exists():
             UserFavProperties.objects.filter(property=property_id,user= request.user).update(is_checked=query['status'])
@@ -553,7 +553,7 @@ def property_form(request):
     message =  request.POST.get('message')
 
     return redirect('/thankyou')
-    
+
 def blog(request):
     return HttpResponse('blog Page....')
 
@@ -574,7 +574,7 @@ def CityGuide(request,city=None):
     for property in properties:
         d = defaultdict(list)
         prop = PropertyFurnitureMapper.objects.filter(property = property)
-        for furniture in prop:    
+        for furniture in prop:
             furniture.furniture_type = int(furniture.furniture_type)
             if furniture.furniture_type == 1:
                 d['room'].append(furniture.furniture_counts.furniture_counts)
@@ -582,7 +582,7 @@ def CityGuide(request,city=None):
                 d['bathrooms'].append(furniture.furniture_counts.furniture_counts)
             elif furniture.furniture_type == 3:
                 d['garage'].append(furniture.furniture_counts.furniture_counts)
-        
+
         properties_dict = {
             "title":property.title,
             "id":property.id,
@@ -660,7 +660,7 @@ def register(request):
         else:
             page_data['error'] = 'Password not maching'
             # return redirect('register')
-    
+
     return render(request, 'auth/register.html', {'page_data': page_data})
 
 
@@ -668,7 +668,7 @@ def register(request):
 def profile(request):
     page_data = {}
     user = Profile.objects.get(user = request.user)
-    if len(request.POST.get('fname',"")) > 1:   
+    if len(request.POST.get('fname',"")) > 1:
         fname = request.POST.get('fname',"")
         lname = request.POST.get('lname',"")
         phone = request.POST.get('phone',"")
@@ -686,28 +686,28 @@ def profile(request):
 
 
 @login_required(redirect_field_name='next',login_url = '/login')
-def favorite_properties(request): 
+def favorite_properties(request):
     page_data = {}
     property_ids = UserFavProperties.objects.filter(user= request.user).filter(is_checked = True).values_list("property_id",flat=True)
-    properties = Properties.objects.filter(id__in = property_ids)        
+    properties = Properties.objects.filter(id__in = property_ids)
     fav_properties = list()
     for prop in properties:
         fav_properties.append(clean_property_data(prop,request.user))
-    
-    page_data['is_favorite_properties'] = 'active'  
+
+    page_data['is_favorite_properties'] = 'active'
     return render(request,'user/dashboard/favorite_properties.html',
     {'fav_properties':fav_properties,"page_data":page_data}
     )
 
 
 @login_required(redirect_field_name='next',login_url = '/login')
-def exclusive_properties(request): 
+def exclusive_properties(request):
     page_data = {}
-    properties = Properties.objects.filter(is_exclusive = True)  
+    properties = Properties.objects.filter(is_exclusive = True)
     fav_properties = list()
     for prop in properties:
-        fav_properties.append(clean_property_data(prop,request.user))      
-    
+        fav_properties.append(clean_property_data(prop,request.user))
+
     page_data['is_exclusive_properties'] = 'active'
     return render(request,'user/dashboard/exclusive_properties.html',
     {'exclusive_properties':fav_properties,"page_data":page_data}
@@ -715,13 +715,13 @@ def exclusive_properties(request):
 
 
 @login_required(redirect_field_name='next',login_url = '/login')
-def my_properties(request): 
+def my_properties(request):
     page_data = {}
-    properties = Properties.objects.filter(is_exclusive = True)  
+    properties = Properties.objects.filter(is_exclusive = True)
     fav_properties = list()
     for prop in properties:
-        fav_properties.append(clean_property_data(prop,request.user))   
-    page_data['is_my_properties'] = 'active'   
+        fav_properties.append(clean_property_data(prop,request.user))
+    page_data['is_my_properties'] = 'active'
     return render(request,'user/dashboard/exclusive_properties.html',
     {'exclusive_properties':fav_properties,"page_data":page_data}
     )
@@ -744,24 +744,24 @@ def monthly_offers(request):
 
 
 @login_required(redirect_field_name='next',login_url = '/login')
-def submit_property(request):    
+def submit_property(request):
     page_data = {}
     if request.method =="POST":
         query = {}
         query['images'] = request.FILES.get('files', "")
         query['propery_images'] = request.POST.getlist('files', "")
-        query['title'] = request.POST.get('title', "")     
-        query['status'] = request.POST.getlist('status', "")     
-        query['type'] = request.POST.get('type', "")     
-        query['address'] = request.POST.get('address', "")     
-        query['city'] = request.POST.get('city', "")     
-        query['bedrooms'] = request.POST.getlist('bedrooms', "")    
-        query['bathrooms'] = request.POST.getlist('bathrooms', "")  
-        query['postalcode'] = request.POST.get('postalcode', "")  
-        query['message'] = request.POST.get('message', "")  
-        query['area'] = request.POST.get('area', "") 
-        query['price'] = request.POST.get('price', "") 
-        query['features_list'] = request.POST.get('features_list', "") 
+        query['title'] = request.POST.get('title', "")
+        query['status'] = request.POST.getlist('status', "")
+        query['type'] = request.POST.get('type', "")
+        query['address'] = request.POST.get('address', "")
+        query['city'] = request.POST.get('city', "")
+        query['bedrooms'] = request.POST.getlist('bedrooms', "")
+        query['bathrooms'] = request.POST.getlist('bathrooms', "")
+        query['postalcode'] = request.POST.get('postalcode', "")
+        query['message'] = request.POST.get('message', "")
+        query['area'] = request.POST.get('area', "")
+        query['price'] = request.POST.get('price', "")
+        query['features_list'] = request.POST.get('features_list', "")
         query['features_list'] = [x for x in query['features_list'].split(',')]
 
     page_data['is_submit'] = 'active'
@@ -777,12 +777,12 @@ def property_updates(request):
             constructions.append(construction)
             cons_titles.append(construction.property.title)
     #    d['title'].append(construction.property.title)
-    #    d['image'].append(construction.property.title)     
+    #    d['image'].append(construction.property.title)
 
     return render(request,'user/dashboard/construction_update.html',{'construction_updates':constructions})
 
 
-def construction_update_view(request,property_name):    
+def construction_update_view(request,property_name):
     constructions_lst = list()
     construction_update_ids = ConstructionUpdates.objects.filter(property__title=property_name)
     # construction_update_imgs = ConstructionUpdatesImage.objects.filter(property_update_id__in = construction_update_ids)
@@ -798,7 +798,7 @@ def construction_update_view(request,property_name):
         constructions_lst.append(constructions_dict)
 
     page_data= {'page_name':construction_update_ids[0].property.title}
-   
+
 
     return render(request,'user/dashboard/construction_update_view.html',{'page_data':page_data,
     "construction_update_imgs":construction_update_imgs,"constructions_lst":constructions_lst})

@@ -3,10 +3,10 @@
 <style>
     .properties-description,.floor-plans,.block-wrap,.location,.features,.advanced-search{
         padding: 35px;
-        box-shadow: #00CE8D 0px 1px 4px;     
+        box-shadow: #00CE8D 0px 1px 4px;
         margin: 10px;
         /*  border-radius: 25px; */
-    
+
     }
     .properties-description p strong {
         font-weight: bolder !important;
@@ -40,7 +40,7 @@
         padding: 15px;
         margin: 2px;
         margin:10px 2px 10px 2px;
-    
+
     }
         {% comment %} .product-slider-box img {
             height: 250px;
@@ -199,7 +199,7 @@
             <div class="banner-img">
                 <img src="{% static 'img/slider-property/3-min.jpg' %}" alt="banner" class="img-fluid bp">
             </div>
-        </div>    
+        </div>
         <div class="slide slide-box">
             <div class="banner-img">
                 <img src="{% static 'img/slider-property/4-min.jpg' %}" alt="banner" class="img-fluid bp">
@@ -218,7 +218,7 @@
                 <button type="submit" class="btn btn-outline mb-3" data-bs-toggle="modal" data-bs-target="#enquireFrom">
                     <i class="fa fa-info"></i> Enquire</button>
             </div>
-           
+
         </div>
     </div>        </div>
 
@@ -296,7 +296,7 @@
                   <div class="row">
                       <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                           <div class="about-text clearfix mb-5">
-  
+
                           <h4>Secure your luxury Property today!!</h4>
                           </div>
                           <div class="about-img-section">
@@ -306,7 +306,7 @@
                                           class="w-100" alt="photo"></div>
                               </div>
                               <div class="about-box-Experience">
-  
+
                               </div>
                           </div>
                       </div>
@@ -316,13 +316,13 @@
                   </div>
               </div>
           </div>
-  
+
             </div>
-  
+
       </div>
     </div>
   </div>
-  
+
 <!-- Properties details page start -->
 <div class="properties-details-page content-area">
     <div class="container">
@@ -357,7 +357,7 @@
               </div>
               <div class="slider-nav col-md-12 ">
                 {%for img in prop_images%}
-                <img src="/media/{{img.images}}" class="img-fluid w-100 gallary_img" alt="slider-photo" 
+                <img src="/media/{{img.images}}" class="img-fluid w-100 gallary_img" alt="slider-photo"
                 />
                 {%endfor%}
               </div>
@@ -559,7 +559,7 @@
 
 
 
-        
+
         </div>
         <div class="col-lg-4 col-md-12">
             <div class="sidebar-right">
@@ -584,23 +584,24 @@
 
     {%for property in common_properties_data.recent_properties%}
     <div class="d-flex mb-3 recent-posts-box">
-      <a class="pr-3" href="/properties/{{property.id}}">
-        <img src="/media/{{property.image}}" alt="small-properties" class="flex-shrink-0 me-3" />
-      </a>
-      <div class="detail align-self-center">
-        <h5>
-          <a href="/properties/{{property.id}}">{{property.title}}</a>
-        </h5>
-        <div class="listing-post-meta">
-          £{{property.price}}
-          <a href="/properties/{{property.id}}"><i class="fa fa-calendar"></i> {{property.pub_date}} </a>
+        <a class="col-6 p-0" href="/properties/{{property.id}}">
+            <img src="/media/{{property.image}}" alt="small-properties" class="flex-shrink-0 img-fluid w-100" />
+        </a>
+        <div class="detail col-6 align-self-center">
+            <h5 class="m-0">
+                <a href="/properties/{{property.id}}">{{property.title}}</a>
+            </h5>
+            <div class="listing-post-meta">
+                ${{property.price}}
+                <a href="/properties/{{property.id}}" class="d-block"><i class="fa fa-calendar"></i>
+                    {{property.pub_date}} </a>
+            </div>
         </div>
-      </div>
     </div>
 
     {%endfor%}
   </div>
-             
+
             </div>
         </div>
 
