@@ -5,7 +5,6 @@ from tinymce.models import HTMLField
 from datetime import datetime
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
-from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from geopy.geocoders import Nominatim
@@ -275,39 +274,3 @@ class TeamMembers(models.Model):
         self.name = self.name.capitalize()
         return super(TeamMembers, self).save(*args, **kwargs)
 
-
-
-
-
-class CityGuide(models.Model):
-    name = models.CharField(max_length=20)
-    image = models.FileField(upload_to = 'media/guide/city')
-
-    # Q1 
-    q_1_title = models.CharField(max_length=50,default = " ",blank=True)
-    q_1_desc = models.TextField(default = " ",blank=True)
-    q_1_image = models.FileField(upload_to = 'media/guide/city/q1',default = "default.png",blank=True)
-
-    q_2_title = models.CharField(max_length=50,blank=True)
-    q_2_desc = models.TextField(blank=True)
-    q_2_image = models.FileField(upload_to = 'media/guide/city/q2',blank=True)
-
-    q_3_title = models.CharField(max_length=50,blank=True)
-    q_3_desc = models.TextField(blank=True)
-    q_3_image = models.FileField(upload_to = 'media/guide/city/q3',blank=True)
-
-
-    card_1_title = models.CharField(max_length=50,blank=True)
-    card_1_desc = models.TextField(blank=True)
-    card_1_image = models.FileField(upload_to = 'media/guide/city/c1',blank=True)
-
-    card_2_title = models.CharField(max_length=50,blank=True)
-    card_2_desc = models.TextField(blank=True)
-    card_2_image = models.FileField(upload_to = 'media/guide/city/c2',blank=True)
-
-    card_3_title = models.CharField(max_length=50,blank=True)
-    card_3_desc = models.TextField(blank=True)
-    card_3_image = models.FileField(upload_to = 'media/guide/city/c3',blank=True)
-
-    def __str__(self):
-        return self.name
