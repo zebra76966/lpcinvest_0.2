@@ -298,7 +298,7 @@ def property_view(request,id):
     similar_properties = Properties.objects.filter(city = property.city)[:2]
     page_data = {'page_name':property.title}
     Calculated_data = MortgageCalculator(property.price)
-    # if request.is_ajax(): 
+    # if request.is_ajax():
     #     properties_list = SendPropertiesToMap(request,property)
     #     return JsonResponse({'data':properties_list})
 
@@ -810,6 +810,12 @@ def faqs(request):
 def teams(request):
     team_members = TeamMembers.objects.all()
     return render(request,'user/teams.html',{'team_members':team_members})
+
+def blog(request):
+    return render(request,'user/blog.html')
+
+def readblog(request):
+    return render(request,'user/readblog.html')    
 
 def partners(request):
     return render(request,'user/partners.html')

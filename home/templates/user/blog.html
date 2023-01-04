@@ -1,0 +1,125 @@
+{% extends 'user/basic.html' %} {% load static %} {% block title %} Meet The Team {%endblock title%} {% block css %} {% endblock css %} {% block body %}
+
+<!-- Sub banner start -->
+<div class="sub-banner">
+  <div class="container">
+    <div class="breadcrumb-area">
+      <h1>{{page_data.member_name}}</h1>
+      <ul class="breadcrumbs">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href='/about'>About</a></li> <li class="active">blog</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Sub banner end -->
+<div class="container my-5">
+
+  <h1 class="h1 text-center py-4" style="color:#00CE8D;"><span style="color:#262525">Latest </span>News</h1>
+  <hr style="height:5px;background-color: #00CE8D;"/>
+  <p class="lead text-center py-3 mb-5">Lorem Ipsum is simply dummy text of the printing and typesetting
+    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+    1500s, when an unknown printer took a
+    galley of type and scrambled it to make a type specimen book.
+    1500s, when an unknown printer took a
+    galley of type and scrambled it to make a type specimen book.
+  </p>
+
+
+
+  <div class="row">
+
+    <div class="col-12 my-4 text-dark">
+      <form class="d-flex justify-content-between gap-4">
+          <div class="mb-3 w-100">
+            <label for="Select" class="form-label">Topic</label>
+            <select id="Select" class="form-select">
+              <option>-Select Topic-</option>
+            </select>
+          </div>
+          <div class="mb-3 w-100">
+            <label for="Select" class="form-label">City</label>
+            <select id="Select" class="form-select">
+              <option>-Select City-</option>
+            </select>
+          </div>
+      </form>
+    </div>
+
+    <!--Blog Card  Start-->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+      <div class="position-relative tm-card" style="height:550px!important">
+        <img src="{% static 'img/background-index/1.jpg' %}"
+        class="w-100" style="height:80%;object-fit:cover;">
+
+        <div style="position:absolute;bottom:0;z-index:2" class="p-1 w-100 mx-auto">
+          <div class="card text-dark bg-light mb-3">
+            <h5 class="pt-3 mb-0 ps-3">Your Guide to Investing in Property That Hasn’t Begun Construction </h5>
+            <p class="card-header pb-3"><i class="fa fa-calendar"></i> January 4, 2023</p>
+            <div class="card-body">
+              <p>
+                Even though buying off-the-plan properties is becoming more and more common,
+              </p>
+              <a href="readblog"class="btn btn-lg cont-sec">Read more...</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--Blog Card  End-->
+    <!--Blog Card  Start-->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+      <div class="position-relative tm-card" style="height:550px!important">
+        <img src="{% static 'img/background-index/1.jpg' %}"
+        class="w-100" style="height:80%;object-fit:cover;">
+
+        <div style="position:absolute;bottom:0;z-index:2" class="p-1 w-100 mx-auto">
+          <div class="card text-dark bg-light mb-3">
+            <h5 class="pt-3 mb-0 ps-3">Your Guide to Investing in Property That Hasn’t Begun Construction </h5>
+            <p class="card-header pb-3"><i class="fa fa-calendar"></i> January 4, 2023</p>
+            <div class="card-body">
+              <p>
+                Even though buying off-the-plan properties is becoming more and more common,
+              </p>
+              <a href="readblog"class="btn btn-lg cont-sec">Read more...</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--Blog Card  End-->
+    <!--Blog Card  Start-->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+      <div class="position-relative tm-card" style="height:550px!important">
+        <img src="{% static 'img/background-index/1.jpg' %}"
+        class="w-100" style="height:80%;object-fit:cover;">
+
+        <div style="position:absolute;bottom:0;z-index:2" class="p-1 w-100 mx-auto">
+          <div class="card text-dark bg-light mb-3">
+            <h5 class="pt-3 mb-0 ps-3">Your Guide to Investing in Property That Hasn’t Begun Construction </h5>
+            <p class="card-header pb-3"><i class="fa fa-calendar"></i> January 4, 2023</p>
+            <div class="card-body">
+              <p>
+                Even though buying off-the-plan properties is becoming more and more common,
+              </p>
+              <a href="readblog"class="btn btn-lg cont-sec">Read more...</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!--Blog Card  End-->
+
+
+
+  </div>
+
+</div>
+
+{%endblock body%} {% block script %} {% endblock script %}
