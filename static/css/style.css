@@ -13285,3 +13285,14 @@ margin-top: 30px;
   display: block;
   opacity: 1;
 }
+
+
+.bg-para{
+  background: url('../img/img-1.jpg');
+  height:80%;
+  width:100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
